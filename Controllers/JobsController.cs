@@ -38,7 +38,7 @@ namespace EFAPITest.Controllers
         public async Task<ActionResult> PostAsync([FromBody] Job newJob)
         {
             // Check if a record with this JMPID already exists.
-            var jobsWithMatchingJMPID = _mainDBContext.Jobs.Select(j => j.JMPID == newJob.JMPID);
+            var jobsWithMatchingJMPID = _mainDBContext.Jobs.Where(j => j.JMPID == newJob.JMPID);
             if (jobsWithMatchingJMPID.Count() > 0)
             {
                 _logger.LogInformation("Unable to create Job, JMPID already in use: {JMPID}", newJob.JMPID);
