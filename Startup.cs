@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using EFAPITest.Databases;
+using EFAPITest.Managers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -28,8 +29,13 @@ namespace EFAPITest
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-            var connection = Configuration.GetConnectionString("MainDB");
-            services.AddDbContext<MainDBContext> (options => options.UseSqlServer(connection));
+            var mainDBConnection = Configuration.GetConnectionString("MainDB");
+            services.AddDbContext<MainDBContext> (options => options.UseSqlServer(mainDBConnection));
+
+            var oldDBConnection = Configuration.GetConnectionString("OldDB");
+            services.AddDbContext<OldDBContext>(options => options.UseSqlServer(oldDBConnection));
+
+            services.AddScoped<JobMgr>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

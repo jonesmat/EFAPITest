@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using EFAPITest.Databases;
+using EFAPITest.Managers;
 using EFAPITest.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -14,39 +15,42 @@ namespace EFAPITest.Controllers
     public class JobsController : ControllerBase
     {
         ILogger _logger;
-        MainDBContext _mainDBContext;
+        JobMgr _jobMgr;
 
-        public JobsController(ILogger<JobsController> logger, MainDBContext mainDBContext)
+        public JobsController(ILogger<JobsController> logger, JobMgr jobMgr)
         {
             _logger = logger;
-            _mainDBContext = mainDBContext;
+            _jobMgr = jobMgr;
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<Job>> Get()
+        public async Task<ActionResult<IEnumerable<Job>>> GetAsync()
         {
-            return Ok(_mainDBContext.Jobs);
+            var jobs = await _jobMgr.GetJobs();
+            return Ok(jobs);
         }
         
-        [HttpGet("{id}")]
-        public ActionResult<string> Get(int id)
+        [HttpGet("{JMPID}")]
+        public async Task<ActionResult<Job>> GetAsync(int JMPID)
         {
-            throw new NotImplementedException();
+            var jobs = await _jobMgr.GetJobs();
+            var jobsWithMatchingJMPID = jobs.Where(j => j.JMPID == JMPID);
+            return jobsWithMatchingJMPID.FirstOrDefault();
         }
         
         [HttpPost]
         public async Task<ActionResult> PostAsync([FromBody] Job newJob)
         {
             // Check if a record with this JMPID already exists.
-            var jobsWithMatchingJMPID = _mainDBContext.Jobs.Where(j => j.JMPID == newJob.JMPID);
+            var jobs = await _jobMgr.GetJobs();
+            var jobsWithMatchingJMPID = jobs.Where(j => j.JMPID == newJob.JMPID);
             if (jobsWithMatchingJMPID.Count() > 0)
             {
                 _logger.LogInformation("Unable to create Job, JMPID already in use: {JMPID}", newJob.JMPID);
                 return NotFound("JMPID already exists");
             }
-            
-            await _mainDBContext.Jobs.AddAsync(newJob);
-            await _mainDBContext.SaveChangesAsync();
+
+            await _jobMgr.CreateJob(newJob);
 
             return Ok();
         }
