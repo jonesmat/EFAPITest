@@ -9,5 +9,11 @@ namespace EFAPITest.Databases
         { }
 
         public DbSet<Job> Jobs { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            // Set Job's Primary Key
+            modelBuilder.Entity<Job>().HasKey(j => j.JMPID);
+        }
     }
 }

@@ -44,8 +44,6 @@ namespace EFAPITest.Controllers
                 _logger.LogInformation("Unable to create Job, JMPID already in use: {JMPID}", newJob.JMPID);
                 return NotFound("JMPID already exists");
             }
-
-            newJob.ID = new Guid();
             
             await _mainDBContext.Jobs.AddAsync(newJob);
             await _mainDBContext.SaveChangesAsync();
