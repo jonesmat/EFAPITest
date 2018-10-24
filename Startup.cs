@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using EFAPITest.Databases;
 using EFAPITest.Managers;
+using Hangfire;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -29,6 +30,9 @@ namespace EFAPITest
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
+            var hangfireDBConnection = Configuration.GetConnectionString("HangfireDB");
+            services.AddHangfire(x => x.UseSqlServerStorage(hangfireDBConnection));
+
             var mainDBConnection = Configuration.GetConnectionString("MainDB");
             services.AddDbContext<MainDBContext> (options => options.UseSqlServer(mainDBConnection));
 
@@ -45,6 +49,9 @@ namespace EFAPITest
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseHangfireServer();
+            app.UseHangfireDashboard();
 
             app.UseMvc();
         }

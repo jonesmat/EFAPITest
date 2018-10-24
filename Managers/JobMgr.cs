@@ -1,5 +1,6 @@
 ﻿using EFAPITest.Databases;
 using EFAPITest.Model;
+using Hangfire;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
@@ -37,6 +38,22 @@ namespace EFAPITest.Managers
         {
             await _mainDBContext.Jobs.AddAsync(job);
             await _mainDBContext.SaveChangesAsync();
+        }
+
+        [DisableConcurrentExecution(timeoutInSeconds: 30)]
+        [AutomaticRetry(Attempts = 0, LogEvents = false, OnAttemptsExceeded = AttemptsExceededAction.Delete)]
+        public void ConvertAllOldJobs(IJobCancellationToken cancellationToken)
+        {
+            long loops = 0;
+            int maxLoops = new Random().Next(1000, 10000);
+            while (loops != maxLoops)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+
+                var jobs = _mainDBContext.Jobs.ToList();
+
+                loops++;
+            }
         }
 
         private Job ConvertOldJob(OldJob oldJob)

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using EFAPITest.Databases;
 using EFAPITest.Managers;
 using EFAPITest.Model;
+using Hangfire;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -65,6 +66,14 @@ namespace EFAPITest.Controllers
         public void Delete(int id)
         {
             throw new NotImplementedException();
+        }
+
+
+        [Route("Convert")]
+        [HttpPost]
+        public void ConvertOldJobs()
+        {
+            BackgroundJob.Enqueue(() => _jobMgr.ConvertAllOldJobs(JobCancellationToken.Null));
         }
     }
 }
