@@ -1,0 +1,23 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EFAPITestService", "EFAPITestService\EFAPITestService.csproj", "{2AD2C11A-C9A9-4B2D-AF49-E481A5070206}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EFAPITestAPI", "EFAPITestAPI\EFAPITestAPI.csproj", "{6A16D514-F775-4089-BDA7-6B62A611C396}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2AD2C11A-C9A9-4B2D-AF49-E481A5070206}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2AD2C11A-C9A9-4B2D-AF49-E481A5070206}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2AD2C11A-C9A9-4B2D-AF49-E481A5070206}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2AD2C11A-C9A9-4B2D-AF49-E481A5070206}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A16D514-F775-4089-BDA7-6B62A611C396}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A16D514-F775-4089-BDA7-6B62A611C396}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A16D514-F775-4089-BDA7-6B62A611C396}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A16D514-F775-4089-BDA7-6B62A611C396}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
